@@ -1,3 +1,6 @@
+import pymysql
+pymysql.install_as_MySQLdb()  # 🔹 Windows Hack: Forces Flask to use the stable PyMySQL connector
+
 import os
 from dotenv import load_dotenv
 

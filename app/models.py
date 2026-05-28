@@ -293,6 +293,7 @@ class Post(db.Model):
     body_html = db.Column(db.Text)
     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     author_id = db.Column(db.Integer, db.ForeignKey('users.id'))
+    category_id = db.Column(db.Integer, db.ForeignKey('categories.id'))  # 🔹 Added safely right here!
     comments = db.relationship('Comment', backref='post', lazy='dynamic')
 
     @staticmethod
@@ -365,3 +366,29 @@ class Comment(db.Model):
 
 
 db.event.listen(Comment.body, 'set', Comment.on_changed_body)
+
+class Category(db.Model):
+    __tablename__ = 'categories'
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(64), unique=True, nullable=False)
+    
+    # One-to-many relationship: One category can have many posts
+    posts = db.relationship('Post', backref='category', lazy='dynamic')
+
+    def to_json(self):
+        """Converts the model data into a clean JSON structure for the REST API response"""
+        json_category = {
+            'id': self.id,
+            'name': self.name,
+            'posts_count': self.posts.count()
+        }
+        return json_category
+
+    @staticmethod
+    def from_json(json_category):
+        """Validates incoming JSON payload data sent to our REST API"""
+        name = json_category.get('name')
+        if name is None or name == '':
+            raise ValidationError('Category name is required')
+        return Category(name=name)
+    

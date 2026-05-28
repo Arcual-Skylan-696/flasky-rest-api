@@ -5,6 +5,7 @@ from flask_moment import Moment
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from flask_pagedown import PageDown
+from flask_mysqldb import MySQL  # 🔹 1. Added MySQL Import
 from config import config
 
 bootstrap = Bootstrap()
@@ -12,6 +13,7 @@ mail = Mail()
 moment = Moment()
 db = SQLAlchemy()
 pagedown = PageDown()
+mysql = MySQL()  # 🔹 2. Initialize the Global MySQL Object
 
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
@@ -28,6 +30,7 @@ def create_app(config_name):
     db.init_app(app)
     login_manager.init_app(app)
     pagedown.init_app(app)
+    mysql.init_app(app)  # 🔹 3. Bind MySQL to the App Factory
 
     if app.config['SSL_REDIRECT']:
         from flask_sslify import SSLify
