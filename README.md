@@ -1,19 +1,27 @@
 # Flasky Web Application - REST API Enhancement (Categories Feature)
 
-This repository is a submission for the IT6 Final Drill assessment. It extends Miguel Grinberg's baseline modular Flask social application by introducing a feature-rich, RESTful **Categories** endpoint group under the core API blueprint.
+This repository is my official submission for the IT6 Final Drill assessment. The project extends Miguel Grinberg's baseline modular Flask application by adding a new Categories endpoint group under the core API blueprint.
 
-## Added Feature & Business Value
-To move away from an unorganized blog feed, this expansion allows administrative elements and programmatic API actors to classify structural blog data. 
-* **One-to-Many Relationship:** Each single category entity maps natively to multiple target Blog Posts.
-* **Full CRUD Lifecycle:** Integrates API routes to Create, Read, Update, and Delete categories dynamically via JSON parameters.
+## Added Feature and Business Value
 
-## Architecture & Code Modification Locations
-* **`app/models.py`**: Declared the standard relational `Category` table entity with transactional JSON schemas (`to_json`/`from_json`) and integrated a restrictive foreign key constraint tracking column (`category_id`) inside the preexisting `Post` schema.
-* **`app/api/categories.py`**: Implemented explicit resource route endpoints utilizing custom validation patterns and strict HTTP response tracking status codes (`201 Created`, `400 Bad Request`, etc.).
-* **`app/api/__init__.py`**: Registered the extension file natively within the original Flask Blueprint container framework.
-* **`openapi.json`**: Created structural OpenAPI documentation mapping data payload paths.
+To improve the application's unorganized blog feed, this enhancement allows users and administrative clients to classify blog posts into specific topics. 
+
+First, we established a One-to-Many Relationship where a single category can contain multiple blog posts, but each post is tied strictly to one category. Second, we integrated a Full CRUD Lifecycle which provides explicit API routes to Create, Read, Update, and Delete categories dynamically using JSON payloads.
+
+## Architecture and Code Changes
+
+The modifications were implemented across the following project files:
+
+app/models.py: Created the new Category database model, added the to_json and from_json helper methods, and updated the existing Post model to include a category_id foreign key constraint.
+
+app/api/categories.py: Developed the REST API route handlers handles the CRUD endpoints, input data validation, and appropriate HTTP status responses like 201 Created and 400 Bad Request.
+
+app/api/__init__.py: Registered the new categories API endpoint module inside the native Flask Blueprint framework.
+
+openapi.json: Wrote the structural API documentation mapping the endpoints and sample payloads.
 
 ## Local Test Execution Instructions
-To execute the newly developed unit test container suite achieving complete code coverage, run the application test environment macro terminal command:
-```powershell
+
+To run the complete automated unit test suite and verify the code coverage, execute the following command in your terminal:
+
 flask test
