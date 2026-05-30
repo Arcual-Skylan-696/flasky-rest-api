@@ -1,0 +1,19 @@
+{% macro quick_form(form) %}
+<form method="POST" action="" class="form" role="form">
+  {{ form.hidden_tag() }}
+  {% for field in form if field.type != 'CSRFTokenField' %}
+    <div class="form-group">
+      {{ field.label(class="form-control-label") }}
+      {% if field.errors %}
+        {{ field(class="form-control is-invalid") }}
+        {% for error in field.errors %}
+          <div class="invalid-feedback">{{ error }}</div>
+        {% endfor %}
+      {% else %}
+        {{ field(class="form-control") }}
+      {% endif %}
+    </div>
+  {% endfor %}
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+{% endmacro %}
